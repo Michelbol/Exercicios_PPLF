@@ -1,0 +1,29 @@
+#lang racket
+
+(require rackunit)
+(require rackunit/text-ui)
+
+;; Número -> Número
+;; A função recebe dois números e soma eles.
+
+(define verifica-tests
+  (test-suite
+   "verifica-test1"
+   (check-equal? (soma 0 1) 1)
+   (check-equal? (soma 1 1) 2)
+   (check-equal? (soma 9999 5000000) 5009999)))
+
+(define (soma n m)
+  (cond
+    [(zero? m) n]
+    [else (soma (add1 n) (sub1 m))]))
+
+
+;; Teste ... -> void
+;; Executa um conjunto de testes
+(define (executa-tests . testes)
+  (run-tests (test-suite "Todos os Testes" testes))
+  (void))
+
+;; Chama a função para executar os testes
+(executa-tests verifica-tests)

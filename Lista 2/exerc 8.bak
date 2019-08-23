@@ -1,0 +1,32 @@
+#lang racket
+
+(require rackunit)
+(require rackunit/text-ui)
+
+;; Lista -> Número
+;; Função receberá uma lista e retornará o último elemento da lista
+(define verifica-tests
+  (test-suite
+   "verifica-test"
+   (check-equal? (ultimo-elem (list 1 2 3 4)) 4)
+   (check-equal? (ultimo-elem (list 1)) 1)
+   (check-equal? (ultimo-elem (list 3 4 5)) 5)
+   (check-equal? (ultimo-elem (list 1 2 3 4)) 4)
+   (check-equal? (ultimo-elem (list 1 2 4 3 2)) 2)
+   (check-equal? (ultimo-elem (list 5 1 2 3 6)) 6)
+   (check-equal? (ultimo-elem empty) (error))))
+
+(define (ultimo-elem lst)
+  (cond
+    [(empty? lst) (error "Lista inválida")]
+    [(empty? (rest lst)) (first lst)]
+    [else (ultimo-elem (rest lst))]))
+
+;; Teste ... -> void
+;; Executa um conjunto de testes
+(define (executa-tests . testes)
+  (run-tests (test-suite "Todos os Testes" testes))
+  (void))
+
+;; Chama a função para executar os testes
+(executa-tests verifica-tests)

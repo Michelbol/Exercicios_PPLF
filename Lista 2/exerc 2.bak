@@ -1,0 +1,31 @@
+#lang racket
+
+(require rackunit)
+(require rackunit/text-ui)
+
+;; Lista Número -> Lista
+;; Função receberá uma lista e um número e retornará a lista sem o número informado
+(define verifica-tests
+  (test-suite
+   "verifica-test"
+   (check-equal? (remove-elem 0 (list 1 2 3 4)) (list 1 2 3 4))
+   (check-equal? (remove-elem 1 empty) empty)
+   (check-equal? (remove-elem 2 (list 2 1)) (list 1))
+   (check-equal? (remove-elem 3 (list 3 4 5)) (list 4 5))
+   (check-equal? (remove-elem 4 (list 1 2 4 3 4)) (list 1 2 3))
+   (check-equal? (remove-elem 1 (list 5 1 2 3 5)) (list 1 2 3))))
+
+(define (remove-elem n lst)
+  (cond
+    [(empty? lst) empty]
+    [(equal? n (first lst) ) (remove-elem n (rest lst))]
+    [else first lst]))
+
+;; Teste ... -> void
+;; Executa um conjunto de testes
+(define (executa-tests . testes)
+  (run-tests (test-suite "Todos os Testes" testes))
+  (void))
+
+;; Chama a função para executar os testes
+(executa-tests verifica-tests)

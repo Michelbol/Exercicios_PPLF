@@ -1,0 +1,31 @@
+#lang racket
+
+(require rackunit)
+(require rackunit/text-ui)
+
+;; Lista Lista -> Lista
+;; A função recebe duas listas, e retorna uma lista com os elementos da segunda lista após os elementos da primeira.
+
+(define verifica-tests
+  (test-suite
+   "verifica-test1"
+   (check-equal? (append empty empty) empty)
+   (check-equal? (append (list 2 3 4) empty) (list 2 3 4))
+   (check-equal? (append empty (list 5 0)) (list 5 0))
+   (check-equal? (append (list 2 3 4) (list 5 1)) (list 2 3 4 5 1))))
+
+(define (append lsta lstb)
+  (cond
+    [(empty? lstb) empty]
+    [(empty? lsta) empty]
+    [else (cons (first lsta) (append (rest lsta) (rest lstb)))]))
+
+
+;; Teste ... -> void
+;; Executa um conjunto de testes
+(define (executa-tests . testes)
+  (run-tests (test-suite "Todos os Testes" testes))
+  (void))
+
+;; Chama a função para executar os testes
+(executa-tests verifica-tests)

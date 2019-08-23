@@ -1,0 +1,35 @@
+#lang racket
+
+(require rackunit)
+(require rackunit/text-ui)
+
+;; Número Lista -> boolean
+;; verifica se o número informado está na lista informada.
+
+(define verifica-tests
+  (test-suite
+   "verifica-test1"
+   (check-equal? (verificaElemLista 0 (list 1 2 3 4)) #f)
+   (check-equal? (verificaElemLista 1 empty) #f)
+   (check-equal? (verificaElemLista 2 (list 2 1)) #t)
+   (check-equal? (verificaElemLista 3 (list 3 4 5)) #t)
+   (check-equal? (verificaElemLista 4 (list 1 2 3)) #f)
+   (check-equal? (verificaElemLista 5 (list 1 2 3)) #f)))
+
+(define (verificaElemLista n lst)
+  (cond
+    [(empty? lst) #f]
+    [else
+     (cond
+            [(equal? (first lst) n)]
+            [else (verificaElemLista n (rest lst))])]))
+
+
+;; Teste ... -> void
+;; Executa um conjunto de testes
+(define (executa-tests . testes)
+  (run-tests (test-suite "Todos os Testes" testes))
+  (void))
+
+;; Chama a função para executar os testes
+(executa-tests verifica-tests)

@@ -1,0 +1,33 @@
+#lang racket
+
+(require rackunit)
+(require rackunit/text-ui)
+
+;; Lista -> Lista
+;; Função receberá uma lista e retornará uma lista similiar a anterior, porém sem as ocorrências repetidas de elementos consecutivos
+(define verifica-tests
+  (test-suite
+   "verifica-test"
+   (check-equal? (remove-duplicates empty) empty)
+   (check-equal? (remove-duplicates (list 1)) (list 1))
+   (check-equal? (remove-duplicates (list 1 1)) (list 1))
+   (check-equal? (remove-duplicates (list 1 1 2)) (list 1 2))
+   (check-equal? (remove-duplicates (list 1 1 2 2)) (list 1 2))
+   (check-equal? (remove-duplicates (list 1 1 3 3 2 2)) (list 1 3 2))
+   (check-equal? (remove-duplicates (list 1 1 1 1 2 3 3 4 4 5 5 5)) (list 1 2 3 4 5))))
+
+(define (remove-duplicates lst)
+  (cond
+    [(empty? lst) empty]
+    [(empty? (rest lst)) (cons (first lst) empty)]
+    [(equal? (first lst) (first (remove-duplicates (rest lst)))) (remove-duplicates(rest lst)) ]
+    [else (cons (first lst) (remove-duplicates (rest lst)))]))
+
+;; Teste ... -> void
+;; Executa um conjunto de testes
+(define (executa-tests . testes)
+  (run-tests (test-suite "Todos os Testes" testes))
+  (void))
+
+;; Chama a função para executar os testes
+(executa-tests verifica-tests)
